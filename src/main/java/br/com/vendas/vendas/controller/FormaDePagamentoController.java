@@ -56,7 +56,7 @@ public class FormaDePagamentoController {
 			}
 
 		} catch (Exception e) {
-			logger.error("Erro em procurar forma de pagamento por id");
+			logger.error("Erro em procurar forma de pagamento por id", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
