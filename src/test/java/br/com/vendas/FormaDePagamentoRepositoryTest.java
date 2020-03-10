@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import br.com.vendas.vendas.repository.FormaDePagamentoEntity;
-import br.com.vendas.vendas.repository.FormaDePagamentoRepository;
+import br.com.vendas.repository.FormaDePagamentoEntity;
+import br.com.vendas.repository.FormaDePagamentoRepository;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest

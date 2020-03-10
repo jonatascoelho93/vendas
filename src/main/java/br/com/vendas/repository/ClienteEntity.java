@@ -1,4 +1,4 @@
-package br.com.vendas.vendas.repository;
+package br.com.vendas.repository;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

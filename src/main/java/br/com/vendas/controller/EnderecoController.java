@@ -1,4 +1,4 @@
-package br.com.vendas.vendas.controller;
+package br.com.vendas.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 
-import br.com.vendas.vendas.repository.EnderecoEntity;
+import br.com.vendas.repository.EnderecoEntity;
 
 @RestController
 @RequestMapping("/endereco")

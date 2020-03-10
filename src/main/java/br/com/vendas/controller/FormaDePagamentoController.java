@@ -1,4 +1,4 @@
-package br.com.vendas.vendas.controller;
+package br.com.vendas.controller;
 
 import java.util.Optional;
 
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.vendas.vendas.repository.FormaDePagamentoEntity;
-import br.com.vendas.vendas.repository.FormaDePagamentoRepository;
+import br.com.vendas.repository.FormaDePagamentoEntity;
+import br.com.vendas.repository.FormaDePagamentoRepository;
 
 @RestController
 @RequestMapping("/formadepagamento")
