@@ -19,6 +19,15 @@ public class FormaDePagamentoEntity {
 	private Integer parcele4;
 	private Integer parcele5;
 	private Integer parcele6;
+	
+	
+
+	public FormaDePagamentoEntity(Long codigoFormaDePgto, String descricaoFormaDePgto) {
+		super();
+		this.codigoFormaDePgto = codigoFormaDePgto;
+		this.descricaoFormaDePgto = descricaoFormaDePgto;
+
+	}
 
 	public Long getIdFormaDePgto() {
 		return idFormaDePgto;
