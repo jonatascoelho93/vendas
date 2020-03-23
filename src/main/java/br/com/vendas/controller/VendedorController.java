@@ -21,7 +21,7 @@ import br.com.vendas.repository.VendedorEntity;
 import br.com.vendas.repository.VendedorRepository;
 
 @RestController
-@RequestMapping("/Vendedor")
+@RequestMapping("/vendedor")
 @CrossOrigin
 public class VendedorController {
 

@@ -4,35 +4,38 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
-@Entity(name = "produdo")
+@Entity(name = "produtos")
 public class ProdutoEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Long idProduto;
 	private Long codEan;
-	private Long codReduzido;
+	private Long codProduto;
 	private String ref;
 	private String descricao;
 	private String descricaoReduzida;
-	@ManyToOne
-	private CorEntity cor;
+	private String cor;
 	private String gradeVenda;
 	private String descricaoUnidadeVend;
 	private Long unidadeVenda;
 	private Long origem;
 	private Long ncm;
+	private Float custo;
 	private Float preco;
 	private Long estoque;
+	private Float altura;
+	private Float largura;
+	private Float comprimento;
+	private Float peso;
 
-	public Long getId() {
-		return id;
+	public Long getIdProduto() {
+		return idProduto;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdProduto(Long idProduto) {
+		this.idProduto = idProduto;
 	}
 
 	public Long getCodEan() {
@@ -43,12 +46,12 @@ public class ProdutoEntity {
 		this.codEan = codEan;
 	}
 
-	public Long getCodReduzido() {
-		return codReduzido;
+	public Long getCodProduto() {
+		return codProduto;
 	}
 
-	public void setCodReduzido(Long codReduzido) {
-		this.codReduzido = codReduzido;
+	public void setCodProduto(Long codProduto) {
+		this.codProduto = codProduto;
 	}
 
 	public String getRef() {
@@ -75,11 +78,11 @@ public class ProdutoEntity {
 		this.descricaoReduzida = descricaoReduzida;
 	}
 
-	public CorEntity getCor() {
+	public String getCor() {
 		return cor;
 	}
 
-	public void setCor(CorEntity cor) {
+	public void setCor(String cor) {
 		this.cor = cor;
 	}
 
@@ -123,6 +126,14 @@ public class ProdutoEntity {
 		this.ncm = ncm;
 	}
 
+	public Float getCusto() {
+		return custo;
+	}
+
+	public void setCusto(Float custo) {
+		this.custo = custo;
+	}
+
 	public Float getPreco() {
 		return preco;
 	}
@@ -138,5 +149,39 @@ public class ProdutoEntity {
 	public void setEstoque(Long estoque) {
 		this.estoque = estoque;
 	}
+
+	public Float getAltura() {
+		return altura;
+	}
+
+	public void setAltura(Float altura) {
+		this.altura = altura;
+	}
+
+	public Float getLargura() {
+		return largura;
+	}
+
+	public void setLargura(Float largura) {
+		this.largura = largura;
+	}
+
+	public Float getComprimento() {
+		return comprimento;
+	}
+
+	public void setComprimento(Float comprimento) {
+		this.comprimento = comprimento;
+	}
+
+	public Float getPeso() {
+		return peso;
+	}
+
+	public void setPeso(Float peso) {
+		this.peso = peso;
+	}
+
+
 
 }

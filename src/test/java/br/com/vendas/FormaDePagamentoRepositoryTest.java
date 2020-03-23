@@ -30,6 +30,8 @@ public class FormaDePagamentoRepositoryTest {
 		Assertions.assertThat(formaPgto.getCodigoFormaDePgto()).isEqualTo(901l);
 		Assertions.assertThat(formaPgto.getDescricaoFormaDePgto()).isEqualTo("Avista");
 	}
+	
+	
 
 }
  

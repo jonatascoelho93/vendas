@@ -15,19 +15,10 @@ public class FormaDePagamentoEntity {
 	private String descricaoFormaDePgto;
 	private Integer parcela1;
 	private Integer parcela2;
-	private Integer parcele3;
-	private Integer parcele4;
-	private Integer parcele5;
-	private Integer parcele6;
-	
-	
-
-	public FormaDePagamentoEntity(Long codigoFormaDePgto, String descricaoFormaDePgto) {
-		super();
-		this.codigoFormaDePgto = codigoFormaDePgto;
-		this.descricaoFormaDePgto = descricaoFormaDePgto;
-
-	}
+	private Integer parcela3;
+	private Integer parcela4;
+	private Integer parcela5;
+	private Integer parcela6;
 
 	public Long getIdFormaDePgto() {
 		return idFormaDePgto;
@@ -69,36 +60,36 @@ public class FormaDePagamentoEntity {
 		this.parcela2 = parcela2;
 	}
 
-	public Integer getParcele3() {
-		return parcele3;
+	public Integer getParcela3() {
+		return parcela3;
 	}
 
-	public void setParcele3(Integer parcele3) {
-		this.parcele3 = parcele3;
+	public void setParcela3(Integer parcela3) {
+		this.parcela3 = parcela3;
 	}
 
-	public Integer getParcele4() {
-		return parcele4;
+	public Integer getparcela4() {
+		return parcela4;
 	}
 
-	public void setParcele4(Integer parcele4) {
-		this.parcele4 = parcele4;
+	public void setparcela4(Integer parcela4) {
+		this.parcela4 = parcela4;
 	}
 
-	public Integer getParcele5() {
-		return parcele5;
+	public Integer getparcela5() {
+		return parcela5;
 	}
 
-	public void setParcele5(Integer parcele5) {
-		this.parcele5 = parcele5;
+	public void setparcela5(Integer parcela5) {
+		this.parcela5 = parcela5;
 	}
 
-	public Integer getParcele6() {
-		return parcele6;
+	public Integer getparcela6() {
+		return parcela6;
 	}
 
-	public void setParcele6(Integer parcele6) {
-		this.parcele6 = parcele6;
+	public void setparcela6(Integer parcela6) {
+		this.parcela6 = parcela6;
 	}
 
 }

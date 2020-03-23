@@ -21,7 +21,7 @@ import br.com.vendas.repository.ProdutoEntity;
 import br.com.vendas.repository.ProdutoRepository;
 
 @RestController
-@RequestMapping("/produto")
+@RequestMapping("/produtos")
 @CrossOrigin
 public class ProdutoController {
 	
@@ -79,7 +79,7 @@ public class ProdutoController {
 			logger.info("Acessando sistema de alteração de produto");
 			Optional<ProdutoEntity> entity = produtoRepository.findById(id);
 			if (entity.isPresent()) {
-				produtoEntity.setId(id);
+				produtoEntity.setIdProduto(id);
 				produtoRepository.save(produtoEntity);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} else {

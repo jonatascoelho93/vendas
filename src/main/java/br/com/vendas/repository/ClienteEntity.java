@@ -7,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-@Entity(name = "cliente")
+@Entity(name = "clientes")
 public class ClienteEntity {
 
 	@Id

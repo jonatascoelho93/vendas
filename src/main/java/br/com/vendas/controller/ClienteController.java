@@ -21,7 +21,7 @@ import br.com.vendas.repository.ClienteEntity;
 import br.com.vendas.repository.ClienteRepository;
 
 @RestController
-@RequestMapping("/cliente")
+@RequestMapping("/clientes")
 @CrossOrigin
 public class ClienteController {
 

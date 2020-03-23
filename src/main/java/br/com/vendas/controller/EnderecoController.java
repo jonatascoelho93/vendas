@@ -12,10 +12,10 @@ import com.google.gson.Gson;
 import br.com.vendas.repository.EnderecoEntity;
 
 @RestController
-@RequestMapping("/endereco")
+@RequestMapping("/enderecos")
 public class EnderecoController {
 
-	@GetMapping // http://localhost:8080/endereco?cep=*
+	@GetMapping // http://localhost:8080/enderecos?cep=*
 	public EnderecoEntity getByCep(@RequestParam(name = "cep") String cep) {
 
 		RestTemplate restTemplate = new RestTemplate();
