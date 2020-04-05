@@ -21,7 +21,7 @@ public class ProdutoEntity {
 	private String descricaoUnidadeVend;
 	private Long unidadeVenda;
 	private Long origem;
-	private Long ncm;
+	private String ncm;
 	private Float custo;
 	private Float preco;
 	private Long estoque;
@@ -118,11 +118,11 @@ public class ProdutoEntity {
 		this.origem = origem;
 	}
 
-	public Long getNcm() {
+	public String getNcm() {
 		return ncm;
 	}
 
-	public void setNcm(Long ncm) {
+	public void setNcm(String ncm) {
 		this.ncm = ncm;
 	}
 

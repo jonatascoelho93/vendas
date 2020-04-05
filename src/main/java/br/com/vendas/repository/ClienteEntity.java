@@ -6,23 +6,35 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity(name = "clientes")
 public class ClienteEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCliente;
 	private String registroFederal;
 	private Boolean pessoaJuridica;
 	private String inscricaoEstadual;
+	@NotNull(message = "{Nome não pode ser nulo}")
+	@Size(min = 5, max = 50, message = "{O nome deve ter no min 5 caracteres e no max 50}")
 	private String nomeCompleto;
+	@Size(max = 50, message = "{O nome deve ter no min 5 caracteres e no max 50}")
 	private String razaoSocial;
+	@Size(max = 50, message = "{O nome deve ter no min 5 caracteres e no max 50}")
 	private String nomeFantazia;
 	private Boolean bloqueado;
-	private Byte codArea;
+	@NotNull(message = "{O numero de telefone não pode ser nulo}")
+	@Size(min = 14, max = 15, message = "{Numero de telefone incompleto}")
 	private String numeroTelefone;
+	@NotNull(message = "{O numero de telefone não pode ser nulo}")
+	@Size(min = 14, max = 15, message = "{Numero de celular incompleto}")
 	private String numeroCelular;
+	@Email
+	@NotNull(message = "{Email não pode ser nulo}")
 	private String email;
 	private String observacao;
 	@OneToOne(cascade = CascadeType.ALL)
@@ -90,14 +102,6 @@ public class ClienteEntity {
 
 	public void setBloqueado(Boolean bloqueado) {
 		this.bloqueado = bloqueado;
-	}
-
-	public Byte getCodArea() {
-		return codArea;
-	}
-
-	public void setCodArea(Byte codArea) {
-		this.codArea = codArea;
 	}
 
 	public String getNumeroTelefone() {

@@ -18,117 +18,117 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.vendas.repository.ProdutoEntity;
-import br.com.vendas.repository.ProdutoRepository;
+import br.com.vendas.repository.VendedoresEntity;
+import br.com.vendas.repository.VendedoresRepository;
 
 @RestController
-@RequestMapping("/produtos")
+@RequestMapping("/vendedores")
 @CrossOrigin
-public class ProdutoController {
-	
-	public static final Logger logger = LoggerFactory.getLogger(ProdutoController.class);
-	
+public class VendedoresController {
+
+	public static final Logger logger = LoggerFactory.getLogger(VendedoresController.class);
+
 	@Autowired
-	public ProdutoRepository produtoRepository;
-	
+	public VendedoresRepository vendedorRepository;
+
 	@GetMapping
 	public ResponseEntity<?> findAll() {
 		try {
-			logger.info("Acessando o sistema de listar produtos");
-			return new ResponseEntity<>(produtoRepository.findAll(), HttpStatus.OK);
+			logger.info("Acessando o sistema de listar Vendedores");			
+			return new ResponseEntity<>(vendedorRepository.findAll(), HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Erro em listar produtos", e);
+			logger.error("Erro em listar vendedores", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<?> buscarProduto(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<?> buscarVendedores(@PathVariable(name = "id") Long id) {
 		try {
-			logger.info("Acesando busca de produtos por id");
-			Optional<ProdutoEntity> entity = produtoRepository.findById(id);
+			logger.info("Acesando busca de Vendedores por id");
+			Optional<VendedoresEntity> entity = vendedorRepository.findById(id);
 			if (entity.isPresent()) {
-				ProdutoEntity produtoEntity = entity.get();
-				return new ResponseEntity<>(produtoEntity, HttpStatus.OK);
+				VendedoresEntity vendedorEntity = entity.get();
+				return new ResponseEntity<>(vendedorEntity, HttpStatus.OK);
 			} else {
-				logger.info("Produto não encontrado id:" + id);
+				logger.info("Vendedor não encontrado id:" + id);
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 		} catch (Exception e) {
-			logger.error("Erro em procurar produto por id", e);
+			logger.error("Erro em procurar Vendedor por id", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PostMapping
-	public ResponseEntity<?> cadastrarProduto(@RequestBody ProdutoEntity produtoEntity) {
+	public ResponseEntity<?> cadastrarVendedor(@RequestBody VendedoresEntity vendedorEntity) {
 		try {
-			logger.info("Acessando o sitema de cadastro de produto");
-			produtoRepository.save(produtoEntity);
+			logger.info("Acessando o sitema de cadastro de vendedores");
+			vendedorRepository.save(vendedorEntity);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 
 		} catch (Exception e) {
-			logger.error("Erro em cadastrar produto", e);
+			logger.error("Erro em cadastrar vendedor", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<?> alterarProduto(@RequestBody ProdutoEntity produtoEntity,
+	public ResponseEntity<?> alterarVendedor(@RequestBody VendedoresEntity vendedorEntity,
 			@PathVariable(name = "id") Long id) {
 		try {
-			logger.info("Acessando sistema de alteração de produto");
-			Optional<ProdutoEntity> entity = produtoRepository.findById(id);
+			logger.info("Acessando sistema de alteração de vendedor");
+			Optional<VendedoresEntity> entity = vendedorRepository.findById(id);
 			if (entity.isPresent()) {
-				produtoEntity.setIdProduto(id);
-				produtoRepository.save(produtoEntity);
+				vendedorEntity.setId(id);
+				vendedorRepository.save(vendedorEntity);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} else {
-				logger.info("Produto não encontrado id:" + id);
+				logger.info("Vendedor não encontrado id:" + id);
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 		} catch (Exception e) {
-			logger.error("Erro em alterar produto", e);
+			logger.error("Erro em alterar Vendedor", e);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deletarVendedor(@PathVariable(name = "id") Long id) {
+		try {
+			logger.info("Acessando sistema de exclusão de Vendedor");
+			Optional<VendedoresEntity> entity = vendedorRepository.findById(id);
+			if (entity.isPresent()) {
+				vendedorRepository.deleteById(id);
+				return new ResponseEntity<>(HttpStatus.OK);
+
+			} else {
+				logger.info("vendedor não encontrado id:" + id);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+
+		} catch (Exception e) {
+			logger.error("Erro em deletar vendedor", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deletarProduto(@PathVariable(name = "id") Long id) {
-		try {
-			logger.info("Acessando sistema de exclusão de produto");
-			Optional<ProdutoEntity> entity = produtoRepository.findById(id);
-			if (entity.isPresent()) {
-				produtoRepository.deleteById(id);
-				return new ResponseEntity<>(HttpStatus.OK);
-
-			} else {
-				logger.info("Produto não encontrado id:" + id);
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-
-		} catch (Exception e) {
-			logger.error("Erro em deletar produto", e);
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
-	@GetMapping("/p")  // http://localhost:8080/produtos/p?cod=*
+	@GetMapping("/c")  // http://localhost:8080/vendedores/c?cod=*
 	public ResponseEntity<?> buscarProdutoPorCod(@RequestParam(name = "cod") Long cod) {
 		try {
 			logger.info("Acesando busca de produtos por codigo");
-			Optional<ProdutoEntity> entity = produtoRepository.findByCodProduto(cod);
+			Optional<VendedoresEntity> entity = vendedorRepository.findByCodVendedor(cod);
 			if (entity.isPresent()) {
-				ProdutoEntity produtoEntity = entity.get();
-				return new ResponseEntity<>(produtoEntity, HttpStatus.OK);
+				VendedoresEntity vendedorEntity = entity.get();
+				return new ResponseEntity<>(vendedorEntity, HttpStatus.OK);
 			} else {
-				logger.info("Produto não encontrado id:" + cod);
+				logger.info("Vendedor não encontrado cod:" + cod);
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 		} catch (Exception e) {
-			logger.error("Erro em procurar produto por id", e);
+			logger.error("Erro em procurar vendedor por cod", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 }

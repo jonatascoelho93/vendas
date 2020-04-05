@@ -9,15 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import br.com.vendas.repository.VendedorEntity;
-import br.com.vendas.repository.VendedorRepository;
+import br.com.vendas.repository.VendedoresEntity;
+import br.com.vendas.repository.VendedoresRepository;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class VendedorRepositoryTest {
 	
 	@Autowired
-	private VendedorRepository vendedorRepository;
+	private VendedoresRepository vendedorRepository;
 	
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
@@ -25,7 +25,7 @@ public class VendedorRepositoryTest {
 		
 	@Test
 	public void createShouldPersistData() {
-		VendedorEntity vendedor1 = new VendedorEntity();
+		VendedoresEntity vendedor1 = new VendedoresEntity();
 		vendedor1.setNome("Leandro");
 		vendedor1.setEmailVendedor("leandro@leandro.com");
 		vendedor1.setCelular(123456789L);
@@ -39,7 +39,7 @@ public class VendedorRepositoryTest {
 	}   
 	@Test
 	public void deleteShouldRemoveData() {
-		VendedorEntity vendedor1 = new VendedorEntity();
+		VendedoresEntity vendedor1 = new VendedoresEntity();
 		vendedor1.setNome("Leandro");
 		vendedor1.setEmailVendedor("leandro@leandro.com");
 		vendedor1.setTelefone(123456789l);
@@ -51,7 +51,7 @@ public class VendedorRepositoryTest {
 	}
 	@Test
 	public void updateShouldChangeData() {
-		VendedorEntity vendedor1 = new VendedorEntity();
+		VendedoresEntity vendedor1 = new VendedoresEntity();
 		vendedor1.setNome("Maria");
 		vendedor1.setEmailVendedor("maria@maria.com");
 		vendedor1.setCelular(987654321L);
@@ -64,9 +64,9 @@ public class VendedorRepositoryTest {
 	}
 	@Test
 	public void findAllShouldShowAllData() {
-		VendedorEntity vendedor1 = new VendedorEntity();
-		VendedorEntity vendedor2 = new VendedorEntity();
-		VendedorEntity vendedor3 = new VendedorEntity();
+		VendedoresEntity vendedor1 = new VendedoresEntity();
+		VendedoresEntity vendedor2 = new VendedoresEntity();
+		VendedoresEntity vendedor3 = new VendedoresEntity();
 		
 		vendedor1.setNome("Leandro");
 		vendedor1.setEmailVendedor("leandro@leandro.com");

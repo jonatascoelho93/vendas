@@ -17,97 +17,96 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.vendas.repository.VendedorEntity;
-import br.com.vendas.repository.VendedorRepository;
+import br.com.vendas.repository.PedidoEntity;
+import br.com.vendas.repository.PedidoRepository;
 
 @RestController
-@RequestMapping("/vendedor")
+@RequestMapping("/pedidos")
 @CrossOrigin
-public class VendedorController {
+public class PedidoController {
 
-	public static final Logger logger = LoggerFactory.getLogger(VendedorController.class);
+	public static final Logger logger = LoggerFactory.getLogger(PedidoController.class);
 
 	@Autowired
-	public VendedorRepository vendedorRepository;
+	public PedidoRepository pedidoRepository;
 
 	@GetMapping
 	public ResponseEntity<?> findAll() {
 		try {
-			logger.info("Acessando o sistema de listar Vendedores");
-			return new ResponseEntity<>(vendedorRepository.findAll(), HttpStatus.OK);
+			logger.info("Acessando o sistema de listar pedidos");
+			return new ResponseEntity<>(pedidoRepository.findAll(), HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Erro em listar vendedores", e);
+			logger.error("Erro em listar pedidos", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> buscarVendedores(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<?> buscarProduto(@PathVariable(name = "id") Long id) {
 		try {
-			logger.info("Acesando busca de Vendedores por id");
-			Optional<VendedorEntity> entity = vendedorRepository.findById(id);
+			logger.info("Acesando busca de pedido por id");
+			Optional<PedidoEntity> entity = pedidoRepository.findById(id);
 			if (entity.isPresent()) {
-				VendedorEntity vendedorEntity = entity.get();
-				return new ResponseEntity<>(vendedorEntity, HttpStatus.OK);
+				PedidoEntity pedidoEntity = entity.get();
+				return new ResponseEntity<>(pedidoEntity, HttpStatus.OK);
 			} else {
-				logger.info("Vendedor não encontrado id:" + id);
+				logger.info("Pedido não encontrado id:" + id);
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 		} catch (Exception e) {
-			logger.error("Erro em procurar Vendedor por id", e);
+			logger.error("Erro em procurar pedido por id", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PostMapping
-	public ResponseEntity<?> cadastrarVendedor(@RequestBody VendedorEntity vendedorEntity) {
+	public ResponseEntity<?> cadastrarPedido(@RequestBody PedidoEntity pedidoEntity) {
 		try {
-			logger.info("Acessando o sitema de cadastro de vendedores");
-			vendedorRepository.save(vendedorEntity);
+			logger.info("Acessando o sitema de cadastro de pedido");
+			pedidoRepository.save(pedidoEntity);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 
 		} catch (Exception e) {
-			logger.error("Erro em cadastrar vendedor", e);
+			logger.error("Erro em cadastrar pedido", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> alterarVendedor(@RequestBody VendedorEntity vendedorEntity,
-			@PathVariable(name = "id") Long id) {
+	public ResponseEntity<?> alterarPedido(@RequestBody PedidoEntity pedidoEntity, @PathVariable(name = "id") Long id) {
 		try {
-			logger.info("Acessando sistema de alteração de vendedor");
-			Optional<VendedorEntity> entity = vendedorRepository.findById(id);
+			logger.info("Acessando sistema de alteração de pedido");
+			Optional<PedidoEntity> entity = pedidoRepository.findById(id);
 			if (entity.isPresent()) {
-				vendedorEntity.setId(id);
-				vendedorRepository.save(vendedorEntity);
+				pedidoEntity.setIdPedido(id);
+				pedidoRepository.save(pedidoEntity);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} else {
-				logger.info("Vendedor não encontrado id:" + id);
+				logger.info("Pedido não encontrado id:" + id);
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 		} catch (Exception e) {
-			logger.error("Erro em alterar Vendedor", e);
+			logger.error("Erro em alterar pedido", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deletarVendedor(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<?> deletarPedido(@PathVariable(name = "id") Long id) {
 		try {
-			logger.info("Acessando sistema de exclusão de Vendedor");
-			Optional<VendedorEntity> entity = vendedorRepository.findById(id);
+			logger.info("Acessando sistema de exclusão de pedido");
+			Optional<PedidoEntity> entity = pedidoRepository.findById(id);
 			if (entity.isPresent()) {
-				vendedorRepository.deleteById(id);
+				pedidoRepository.deleteById(id);
 				return new ResponseEntity<>(HttpStatus.OK);
 
 			} else {
-				logger.info("vendedor não encontrado id:" + id);
+				logger.info("Pedido não encontrado id:" + id);
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 
 		} catch (Exception e) {
-			logger.error("Erro em deletar vendedor", e);
+			logger.error("Erro em deletar pedido", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

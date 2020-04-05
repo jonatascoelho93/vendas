@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.vendas.repository.FormaDePagamentoEntity;
@@ -110,6 +111,24 @@ public class FormaDePagamentoController {
 
 		} catch (Exception e) {
 			logger.error("Erro em excluir forma de pagamento", e);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/f")  // http://localhost:8080/formadepagamento/f?cod=*
+	public ResponseEntity<?> buscarProdutoPorCod(@RequestParam(name = "cod") Long cod) {
+		try {
+			logger.info("Acesando busca de produtos por codigo");
+			Optional<FormaDePagamentoEntity> entity = formaDePamentoRepository.findByCodigoFormaDePgto(cod);
+			if (entity.isPresent()) {
+				FormaDePagamentoEntity pgtoEntity = entity.get();
+				return new ResponseEntity<>(pgtoEntity, HttpStatus.OK);
+			} else {
+				logger.info("Forma de pagamento não encontrado cod:" + cod);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			logger.error("Erro em procurar forma de pgto por cod", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

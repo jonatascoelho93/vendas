@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.vendas.repository.ClienteEntity;
@@ -108,6 +109,24 @@ public class ClienteController {
 
 		} catch (Exception e) {
 			logger.error("Erro em deletar cliente", e);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/c")  // http://localhost:8080/clientes/c?registroFederal=*
+	public ResponseEntity<?> buscarProdutoPorCod(@RequestParam(name = "registroFederal") String registroFederal) {
+		try {
+			logger.info("Acesando busca de produtos por codigo");
+			Optional<ClienteEntity> entity = clienteRepository.findByRegistroFederal(registroFederal);
+			if (entity.isPresent()) {
+				ClienteEntity clienteEntity = entity.get();
+				return new ResponseEntity<>(clienteEntity, HttpStatus.OK);
+			} else {
+				logger.info("Cliente não encontrado cnpj:" + registroFederal);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			logger.error("Erro em procurar cliente por cnpj", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

@@ -1,17 +1,28 @@
 package br.com.vendas.repository;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity(name = "formadepamento")
 public class FormaDePagamentoEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idFormaDePgto;
+	@NotNull(message = "{valor não pode ser nulo}")
+	@Min(value = 1, message = "{Valor minimo é 1}" )
+	@Max(value = 999, message = "{Valor maximo é 999}")
+	@Column(unique = true)
 	private Long codigoFormaDePgto;
+	@NotNull(message = "{valor não pode ser nulo}")
+	@Size(min = 4, max = 30, message = "{O campo descrição de pagamento deve ter no minimo 4 e no maximo 30 caracteres}")
 	private String descricaoFormaDePgto;
 	private Integer parcela1;
 	private Integer parcela2;
