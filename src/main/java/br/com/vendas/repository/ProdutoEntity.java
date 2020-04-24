@@ -1,28 +1,52 @@
 package br.com.vendas.repository;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity(name = "produtos")
 public class ProdutoEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idProduto;
+	@Column(unique = true)
 	private Long codEan;
+	@Column(unique = true)
 	private Long codProduto;
+	@NotNull
+	@Size(min = 1, max = 10)
 	private String ref;
+	@NotNull(message = "{descrição não pode ser nulo}")
+	@Size(min = 5, max = 60, message = "{O descrição deve ter no min 5 caracteres e no max 50}")
 	private String descricao;
 	private String descricaoReduzida;
+	@NotNull
 	private String cor;
+	@NotNull
+	@Size(min = 2, max = 2)
 	private String gradeVenda;
+	@NotNull
+	@Size(min = 2, max = 10)
 	private String descricaoUnidadeVend;
+	@NotNull
+	@Min(value = 1)
+	@Max(value = 1000)
 	private Long unidadeVenda;
-	private Long origem;
+	@NotNull
+	@Min(value = 0)
+	@Max(value = 2)
+	private Integer origem;
 	private String ncm;
+	@NotNull
 	private Float custo;
+	@NotNull
 	private Float preco;
 	private Long estoque;
 	private Float altura;
@@ -110,11 +134,11 @@ public class ProdutoEntity {
 		this.unidadeVenda = unidadeVenda;
 	}
 
-	public Long getOrigem() {
+	public Integer getOrigem() {
 		return origem;
 	}
 
-	public void setOrigem(Long origem) {
+	public void setOrigem(Integer origem) {
 		this.origem = origem;
 	}
 
@@ -181,7 +205,5 @@ public class ProdutoEntity {
 	public void setPeso(Float peso) {
 		this.peso = peso;
 	}
-
-
 
 }

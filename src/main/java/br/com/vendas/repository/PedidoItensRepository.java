@@ -1,7 +1,13 @@
 package br.com.vendas.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.List;
+import java.util.Optional;
 
-public interface PedidoItensRepository extends CrudRepository<PedidoItensEntity, Long> {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PedidoItensRepository extends JpaRepository<PedidoItensEntity, Long> {
+	
+	List<PedidoItensEntity> findAllByNumeroPedido(Long numeroPedido);
+	Optional<PedidoItensEntity> findByCodProdutoAndNumeroPedido(Long cod, Long numeroP);
 
 }

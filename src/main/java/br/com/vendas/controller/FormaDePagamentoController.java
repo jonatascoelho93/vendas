@@ -115,7 +115,7 @@ public class FormaDePagamentoController {
 		}
 	}
 	
-	@GetMapping("/f")  // http://localhost:8080/formadepagamento/f?cod=*
+	@GetMapping("/c")  // http://localhost:8080/formadepagamento/c?cod=*
 	public ResponseEntity<?> buscarProdutoPorCod(@RequestParam(name = "cod") Long cod) {
 		try {
 			logger.info("Acesando busca de produtos por codigo");

@@ -1,5 +1,8 @@
 package br.com.vendas.controller;
 
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.vendas.repository.EstoqueRepository;
 import br.com.vendas.repository.ProdutoEntity;
 import br.com.vendas.repository.ProdutoRepository;
 
@@ -31,11 +35,22 @@ public class ProdutoController {
 	@Autowired
 	public ProdutoRepository produtoRepository;
 	
+	@Autowired
+	public EstoqueRepository estoqueRepository;
+	
 	@GetMapping
 	public ResponseEntity<?> findAll() {
 		try {
 			logger.info("Acessando o sistema de listar produtos");
-			return new ResponseEntity<>(produtoRepository.findAll(), HttpStatus.OK);
+			NumberFormat moedaFormat = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
+			
+			List<ProdutoEntity> lista = produtoRepository.findAll();
+			
+			for(ProdutoEntity i : lista) {
+				i.setDescricaoReduzida(moedaFormat.format(i.getPreco()));
+			}
+			
+			return new ResponseEntity<>(lista, HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("Erro em listar produtos", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -120,9 +135,11 @@ public class ProdutoController {
 			Optional<ProdutoEntity> entity = produtoRepository.findByCodProduto(cod);
 			if (entity.isPresent()) {
 				ProdutoEntity produtoEntity = entity.get();
+				Long saldo = estoqueRepository.findByCodProduto(cod).getQtdSaldo();
+				produtoEntity.setEstoque(saldo);
 				return new ResponseEntity<>(produtoEntity, HttpStatus.OK);
 			} else {
-				logger.info("Produto não encontrado id:" + cod);
+				logger.info("Produto não encontrado cod:" + cod);
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 		} catch (Exception e) {

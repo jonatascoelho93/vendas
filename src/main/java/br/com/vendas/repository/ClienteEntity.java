@@ -1,6 +1,7 @@
 package br.com.vendas.repository;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,8 +17,12 @@ public class ClienteEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCliente;
+	@Column(unique = true)
+	private Long codCliente;
+	@Column(unique = true)
 	private String registroFederal;
 	private Boolean pessoaJuridica;
+	@Column(unique = true)
 	private String inscricaoEstadual;
 	@NotNull(message = "{Nome não pode ser nulo}")
 	@Size(min = 5, max = 50, message = "{O nome deve ter no min 5 caracteres e no max 50}")
@@ -46,6 +51,14 @@ public class ClienteEntity {
 
 	public void setIdCliente(Long idCliente) {
 		this.idCliente = idCliente;
+	}
+
+	public Long getCodCliente() {
+		return codCliente;
+	}
+
+	public void setCodCliente(Long codCliente) {
+		this.codCliente = codCliente;
 	}
 
 	public String getRegistroFederal() {

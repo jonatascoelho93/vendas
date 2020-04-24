@@ -63,8 +63,7 @@ public class PedidoController {
 	public ResponseEntity<?> cadastrarPedido(@RequestBody PedidoEntity pedidoEntity) {
 		try {
 			logger.info("Acessando o sitema de cadastro de pedido");
-			pedidoRepository.save(pedidoEntity);
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return new ResponseEntity<>(pedidoRepository.save(pedidoEntity), HttpStatus.CREATED);
 
 		} catch (Exception e) {
 			logger.error("Erro em cadastrar pedido", e);

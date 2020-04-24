@@ -113,16 +113,34 @@ public class ClienteController {
 		}
 	}
 	
-	@GetMapping("/c")  // http://localhost:8080/clientes/c?registroFederal=*
-	public ResponseEntity<?> buscarProdutoPorCod(@RequestParam(name = "registroFederal") String registroFederal) {
+	@GetMapping("/r")  // http://localhost:8080/clientes/r?regFederal=*
+	public ResponseEntity<?> buscarClientePorRegFederal(@RequestParam(name = "regfederal") String regFederal) {
 		try {
-			logger.info("Acesando busca de produtos por codigo");
-			Optional<ClienteEntity> entity = clienteRepository.findByRegistroFederal(registroFederal);
+			logger.info("Acesando busca de cliente por cnpj");
+			Optional<ClienteEntity> entity = clienteRepository.findByRegistroFederal(regFederal);
 			if (entity.isPresent()) {
 				ClienteEntity clienteEntity = entity.get();
 				return new ResponseEntity<>(clienteEntity, HttpStatus.OK);
 			} else {
-				logger.info("Cliente não encontrado cnpj:" + registroFederal);
+				logger.info("Cliente não encontrado cnpj:" + regFederal);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			logger.error("Erro em procurar cliente por cnpj", e);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/c")  // http://localhost:8080/clientes/c?cod=*
+	public ResponseEntity<?> buscarClientePorCod(@RequestParam(name = "cod") Long cod) {
+		try {
+			logger.info("Acesando busca de cliente por codigo");
+			Optional<ClienteEntity> entity = clienteRepository.findByCodCliente(cod);
+			if (entity.isPresent()) {
+				ClienteEntity clienteEntity = entity.get();
+				return new ResponseEntity<>(clienteEntity, HttpStatus.OK);
+			} else {
+				logger.info("Cliente não encontrado cod:" + cod);
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 		} catch (Exception e) {

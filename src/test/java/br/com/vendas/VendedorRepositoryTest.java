@@ -28,7 +28,7 @@ public class VendedorRepositoryTest {
 		VendedoresEntity vendedor1 = new VendedoresEntity();
 		vendedor1.setNome("Leandro");
 		vendedor1.setEmailVendedor("leandro@leandro.com");
-		vendedor1.setCelular(123456789L);
+		//vendedor1.setCelular(123456789L);
 		
 		this.vendedorRepository.save(vendedor1);
 		Assertions.assertThat(vendedor1.getId()).isNotNull();
@@ -42,7 +42,7 @@ public class VendedorRepositoryTest {
 		VendedoresEntity vendedor1 = new VendedoresEntity();
 		vendedor1.setNome("Leandro");
 		vendedor1.setEmailVendedor("leandro@leandro.com");
-		vendedor1.setTelefone(123456789l);
+		//vendedor1.setTelefone(123456789l);
 		
 		this.vendedorRepository.save(vendedor1);
 		this.vendedorRepository.delete(vendedor1);
@@ -54,7 +54,7 @@ public class VendedorRepositoryTest {
 		VendedoresEntity vendedor1 = new VendedoresEntity();
 		vendedor1.setNome("Maria");
 		vendedor1.setEmailVendedor("maria@maria.com");
-		vendedor1.setCelular(987654321L);
+		//vendedor1.setCelular(987654321L);
 		this.vendedorRepository.save(vendedor1);
 		
 		Assertions.assertThat(vendedor1.getNome()).isEqualTo("Maria");
@@ -70,13 +70,13 @@ public class VendedorRepositoryTest {
 		
 		vendedor1.setNome("Leandro");
 		vendedor1.setEmailVendedor("leandro@leandro.com");
-		vendedor1.setTelefone(123456789l);
+		//vendedor1.setTelefone(123456789l);
 		vendedor2.setNome("Lucas");
 		vendedor2.setEmailVendedor("lucas@lucas.com");
-		vendedor2.setTelefone(202012122L);
+		//vendedor2.setTelefone(202012122L);
 		vendedor3.setNome("Sabrina");
 		vendedor3.setEmailVendedor("sabrina@sabrina.com");
-		vendedor3.setTelefone(303013131L);
+		//vendedor3.setTelefone(303013131L);
 		
 		this.vendedorRepository.save(vendedor1);
 		this.vendedorRepository.save(vendedor2);
