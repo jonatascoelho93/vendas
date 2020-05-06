@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ import br.com.vendas.repository.VendedoresRepository;
 public class VendedoresController {
 
 	public static final Logger logger = LoggerFactory.getLogger(VendedoresController.class);
+	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	@Autowired
 	public VendedoresRepository vendedorRepository;
@@ -64,6 +66,7 @@ public class VendedoresController {
 	public ResponseEntity<?> cadastrarVendedor(@RequestBody VendedoresEntity vendedorEntity) {
 		try {
 			logger.info("Acessando o sitema de cadastro de vendedores");
+			vendedorEntity.setSenha(encoder.encode(vendedorEntity.getSenha()).toString());
 			vendedorRepository.save(vendedorEntity);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 
@@ -81,6 +84,11 @@ public class VendedoresController {
 			Optional<VendedoresEntity> entity = vendedorRepository.findById(id);
 			if (entity.isPresent()) {
 				vendedorEntity.setId(id);
+				if(vendedorEntity.getSenha().equals("") || vendedorEntity.getSenha().equals(null)) {
+					vendedorEntity.setSenha(vendedorRepository.findById(id).get().getSenha());
+				}else {
+					vendedorEntity.setSenha(encoder.encode(vendedorEntity.getSenha()).toString());
+				}
 				vendedorRepository.save(vendedorEntity);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} else {
