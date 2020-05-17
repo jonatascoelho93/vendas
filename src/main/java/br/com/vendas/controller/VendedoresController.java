@@ -1,5 +1,7 @@
 package br.com.vendas.controller;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -28,15 +30,22 @@ import br.com.vendas.repository.VendedoresRepository;
 public class VendedoresController {
 
 	public static final Logger logger = LoggerFactory.getLogger(VendedoresController.class);
+	
+    MessageDigest m = null;
+    
+    
+
+    
+	
 	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	@Autowired
 	public VendedoresRepository vendedorRepository;
-
+	
 	@GetMapping
 	public ResponseEntity<?> findAll() {
 		try {
-			logger.info("Acessando o sistema de listar Vendedores");			
+			logger.info("Acessando o sistema de listar Vendedores");
 			return new ResponseEntity<>(vendedorRepository.findAll(), HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("Erro em listar vendedores", e);
@@ -66,7 +75,11 @@ public class VendedoresController {
 	public ResponseEntity<?> cadastrarVendedor(@RequestBody VendedoresEntity vendedorEntity) {
 		try {
 			logger.info("Acessando o sitema de cadastro de vendedores");
-			vendedorEntity.setSenha(encoder.encode(vendedorEntity.getSenha()).toString());
+			
+			m = MessageDigest.getInstance("MD5");
+			BigInteger hash = new BigInteger(1, m.digest(vendedorEntity.getSenha().getBytes()));
+			vendedorEntity.setSenha(hash.toString());
+			
 			vendedorRepository.save(vendedorEntity);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 
@@ -84,10 +97,12 @@ public class VendedoresController {
 			Optional<VendedoresEntity> entity = vendedorRepository.findById(id);
 			if (entity.isPresent()) {
 				vendedorEntity.setId(id);
-				if(vendedorEntity.getSenha().equals("") || vendedorEntity.getSenha().equals(null)) {
+				if (vendedorEntity.getSenha().equals("") || vendedorEntity.getSenha().equals(null)) {
 					vendedorEntity.setSenha(vendedorRepository.findById(id).get().getSenha());
-				}else {
-					vendedorEntity.setSenha(encoder.encode(vendedorEntity.getSenha()).toString());
+				} else {
+					m = MessageDigest.getInstance("MD5");
+					BigInteger hash = new BigInteger(1, m.digest(vendedorEntity.getSenha().getBytes()));
+					vendedorEntity.setSenha(hash.toString());
 				}
 				vendedorRepository.save(vendedorEntity);
 				return new ResponseEntity<>(HttpStatus.OK);
@@ -120,8 +135,8 @@ public class VendedoresController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	@GetMapping("/c")  // http://localhost:8080/vendedores/c?cod=*
+
+	@GetMapping("/c") // http://localhost:8080/vendedores/c?cod=*
 	public ResponseEntity<?> buscarProdutoPorCod(@RequestParam(name = "cod") Long cod) {
 		try {
 			logger.info("Acesando busca de produtos por codigo");
@@ -135,6 +150,37 @@ public class VendedoresController {
 			}
 		} catch (Exception e) {
 			logger.error("Erro em procurar vendedor por cod", e);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody VendedoresEntity vendedorEntity) {
+		try {
+			logger.info("Acessando o sitema de login");
+			
+			m = MessageDigest.getInstance("MD5");
+			BigInteger hash = new BigInteger(1, m.digest(vendedorEntity.getSenha().getBytes()));
+			vendedorEntity.setSenha(hash.toString());
+			
+			Optional<VendedoresEntity> vendedor = vendedorRepository
+					.findByEmailVendedor(vendedorEntity.getEmailVendedor());
+
+			
+			if(!vendedor.isPresent()) {
+				logger.info("vendedor não cadastrado email:" + vendedorEntity.getEmailVendedor());
+				return new ResponseEntity<>("vendedor não cadatrado", HttpStatus.NOT_FOUND);
+			}else if(!vendedorEntity.getSenha().equals(vendedor.get().getSenha())) {
+				logger.info("senha invalida email:" + vendedorEntity.getEmailVendedor());
+				return new ResponseEntity<>("senha invalida", HttpStatus.UNAUTHORIZED);
+			}
+			
+			return new ResponseEntity<>(vendedor.get(), HttpStatus.OK);
+			
+			
+			
+		} catch (Exception e) {
+			logger.error("Erro em logar vendedor", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

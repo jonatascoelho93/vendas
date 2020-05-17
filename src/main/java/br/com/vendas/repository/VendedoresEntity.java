@@ -36,7 +36,7 @@ public class VendedoresEntity {
 	private String celular;
 	@NotNull(message = "{Funcionario não pode ser nulo}")
 	private String funcionario;
-	@NotNull(message = "{Campo senha não pode ser invalido}")
+	@NotNull(message = "{Campo senha não pode ser nula}")
 	private String senha;
 
 	public Long getId() {

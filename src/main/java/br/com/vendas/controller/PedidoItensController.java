@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.vendas.repository.EstoqueEntity;
 import br.com.vendas.repository.EstoqueRepository;
+import br.com.vendas.repository.PedidoEntity;
 import br.com.vendas.repository.PedidoItensEntity;
 import br.com.vendas.repository.PedidoItensRepository;
+import br.com.vendas.repository.PedidoRepository;
 
 @RestController
 @RequestMapping("/pedidositens")
@@ -35,6 +37,9 @@ public class PedidoItensController {
 
 	@Autowired
 	public PedidoItensRepository pedidoItensRepository;
+
+	@Autowired
+	public PedidoRepository pedidoRepository;
 
 	@Autowired
 	public EstoqueRepository estoqueRepository;
@@ -87,9 +92,16 @@ public class PedidoItensController {
 				EstoqueEntity estoqueEntity = estoqueRepository.findByCodProduto(pedidoItensEntity.getCodProduto());
 
 				if (estoqueEntity.getQtdSaldo() >= pedidoItensEntity.getQuantidade()) {
+
 					estoqueEntity.setQtdVendida(estoqueEntity.getQtdVendida() + pedidoItensEntity.getQuantidade());
 					estoqueEntity.setQtdSaldo(estoqueEntity.getQtdEstoque() - estoqueEntity.getQtdVendida());
 					estoqueRepository.save(estoqueEntity);
+
+					PedidoEntity pedido = pedidoRepository.findById(pedidoItensEntity.getNumeroPedido()).get();
+					pedido.setTotalProdutos(pedido.getTotalProdutos()
+							+ pedidoItensEntity.getPreco() * pedidoItensEntity.getQuantidade());
+					pedidoRepository.save(pedido);
+
 					return new ResponseEntity<>(pedidoItensRepository.save(pedidoItensEntity), HttpStatus.CREATED);
 				} else {
 					logger.info("Quantidade solicita indisponivel COD:" + pedidoItensEntity.getCodProduto() + " QTD:"
@@ -116,17 +128,25 @@ public class PedidoItensController {
 			Optional<PedidoItensEntity> entity = pedidoItensRepository.findById(id);
 			if (entity.isPresent()) {
 				PedidoItensEntity itens = entity.get();
+
 				EstoqueEntity estoqueEntity = estoqueRepository.findByCodProduto(pedidoItensEntity.getCodProduto());
-				estoqueEntity.setQtdSaldo(estoqueEntity.getQtdVendida() - itens.getQuantidade());
+				estoqueEntity.setQtdVendida(estoqueEntity.getQtdVendida() - itens.getQuantidade());
 				estoqueEntity.setQtdSaldo(estoqueEntity.getQtdEstoque() - estoqueEntity.getQtdVendida());
 
 				if (estoqueEntity.getQtdSaldo() >= pedidoItensEntity.getQuantidade()) {
+
 					estoqueEntity.setQtdVendida(estoqueEntity.getQtdVendida() + pedidoItensEntity.getQuantidade());
 					estoqueEntity.setQtdSaldo(estoqueEntity.getQtdEstoque() - estoqueEntity.getQtdVendida());
 					estoqueRepository.save(estoqueEntity);
 
 					pedidoItensEntity.setIdPedidoItens(id);
 					pedidoItensEntity.setTotalItens(pedidoItensEntity.getPreco() * pedidoItensEntity.getQuantidade());
+
+					PedidoEntity pedido = pedidoRepository.findById(pedidoItensEntity.getNumeroPedido()).get();
+					pedido.setTotalProdutos(pedido.getTotalProdutos()
+							+ pedidoItensEntity.getPreco() * pedidoItensEntity.getQuantidade() - itens.getTotalItens());
+					pedidoRepository.save(pedido);
+
 					return new ResponseEntity<>(pedidoItensRepository.save(pedidoItensEntity), HttpStatus.OK);
 				} else {
 					logger.info("Quantidade solicita indisponivel COD:" + pedidoItensEntity.getCodProduto() + " QTD:"
@@ -151,9 +171,14 @@ public class PedidoItensController {
 			logger.info("Acessando sistema de exclusão de pedidoItens");
 			Optional<PedidoItensEntity> entity = pedidoItensRepository.findById(id);
 			if (entity.isPresent()) {
+				logger.info("1");
 				EstoqueEntity estoqueEntity = estoqueRepository.findByCodProduto(entity.get().getCodProduto());
-				estoqueEntity.setQtdSaldo(estoqueEntity.getQtdVendida() - entity.get().getQuantidade());
+				estoqueEntity.setQtdVendida(estoqueEntity.getQtdVendida() - entity.get().getQuantidade());
 				estoqueEntity.setQtdSaldo(estoqueEntity.getQtdEstoque() - estoqueEntity.getQtdVendida());
+				logger.info("2");
+				PedidoEntity pedido = pedidoRepository.findById(entity.get().getNumeroPedido()).get();
+				pedido.setTotalProdutos(pedido.getTotalProdutos() - entity.get().getTotalItens());
+				pedidoRepository.save(pedido);
 				pedidoItensRepository.deleteById(id);
 				return new ResponseEntity<>(HttpStatus.OK);
 
@@ -163,7 +188,7 @@ public class PedidoItensController {
 			}
 
 		} catch (Exception e) {
-			logger.error("Erro em deletar pedidoItens", e);
+			logger.error("Erro em deletar pedidoItens " + id, e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
